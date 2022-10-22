@@ -75,30 +75,18 @@ services:
     ports:
       - 8083:8080 #  注意此端口和qBittorrent冲突，请把左边的端口改成非冲突端口
       - 9090:9090    
-
-  plex:
-      image: spritsail/plex-media-server
-      container_name: plex
-      volumes:
-        - ./Data/Movies:/media:rw # The media folder
-        - ./transcode:/transcode # Transcoder temporary directory
-        - ./plex:/config # Configurations
-      environment:
-        - LOG_DEBUG=0
-        - LOG_VERBOSE=0
-        - PLEX_CLAIM=claim-q-PxgeTtLVm7YE-aW2sL # Replace this TOKEN!!!
-      restart: unless-stopped
-      hostname: "PLXerver" # change the name to whatever you like
-      ports:
-        - "32400:32400" # The web port
-        - "3005:3005" # The following ports are optional
-        - "8324:8324"
-        - "32469:32469"
-        - "1900:1900"
-        - "32410:32410"
-        - "32412:32412"
-        - "32413:32413"
-        - "32414:32414"
+ plex:
+    image: lscr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - PUID=0 # 注意替换
+      - PGID=0  # 注意替换
+      - VERSION=docker
+    volumes:
+      - ./plex:/config
+      - ./Data/Movies:/volume1/Data/Movies     # 替换成你自己的电影文件夹
 
   emby:
     image: emby/embyserver
