@@ -14,7 +14,7 @@ services:
     image: wahyd4/aria2-ui:nextcloud
     container_name: aria2-ui
     ports:
-      - "8080:80"
+      - "80:80"
       - "443:443"
     volumes:
       - ./Data:/data # mount your personal data folder
@@ -36,18 +36,22 @@ services:
     restart: always
 
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
-    restart: unless-stopped
     network_mode: host
     environment:
       - PUID=0 # 注意替换
       - PGID=0  # 注意替换
       - TZ=Asia/Shanghai
-      - WEBUI_PORT=8081 # QB webui的端口，你可以换成其他端口
+      - WEBUI_PORT=8080 # QB webui的端口，你可以换成其他端口
     volumes:
       - ./qbittorrent:/config
       - ./Data/Downloads:/downloads   # 替换成你自己的下载文件夹
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped   
 
   nzbget:
     image: lscr.io/linuxserver/nzbget
@@ -64,7 +68,7 @@ services:
       - 8082:6789 
       
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     environment:
       - PUID=0 # 注意替换
