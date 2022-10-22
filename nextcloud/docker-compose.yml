@@ -1,0 +1,27 @@
+version: "3.5"
+
+services:
+
+  nextcloud:
+    image: nextcloud:latest
+    volumes:
+      - ./nextcloud:/var/www/html:rw # moutn nextcloud files folder
+      - /root/plx/Data:/data:rw # mount your personal data folder
+    restart: always
+  
+  aria2:
+    image: wahyd4/aria2-ui:nextcloud
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /root/plx/Data:/data # mount your personal data folder
+
+    environment:
+      - DOMAIN=:80 #domain, for https just bind domain like this https://example.com
+      - ENABLE_AUTH=true # enable authentication for aria2
+      - ARIA2_USER=adm # aria2 login user
+      - ARIA2_PWD=pwd  # aria2 login password
+    links:
+      - nextcloud:file-manager
+    restart: always

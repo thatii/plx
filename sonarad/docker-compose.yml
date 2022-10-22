@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=0 # 注意替换
+      - PGID=0  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./radarr:/config
+      - /root/plx:/volume1 # 注意这里不再是下载文件夹，需要是下载/电影/剧集文件夹的母文件夹
+    ports:
+      - 7878:7878
+      
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=0 # 注意替换
+      - PGID=0 # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./sonarr:/config
+      - /root/plx:/volume1 # 注意这里不再是下载文件夹，需要是下载/电影/剧集文件夹的母文件夹
+    ports:
+      - 8989:8989

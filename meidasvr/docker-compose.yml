@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - ./plex:/config
+      - /root/plx/Data/tv:/tv
+      - /root/plx/Data/Movies:/movies
+    restart: unless-stopped
+
+  emby:
+    image: emby/embyserver
+    container_name: embyserver
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - PUID=0 # 注意替换
+      - PGID=0  # 注意替换
+      - GIDLIST=100
+    volumes:
+      - ./emby:/config
+      - /root/plx/Data/Movies:/volume1/Data/Movies     # 替换成你自己的电影文件夹
