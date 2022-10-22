@@ -4,6 +4,7 @@ services:
 
   nextcloud:
     image: nextcloud:latest
+    container_name: nextcloud
     volumes:
       - ./nextcloud:/var/www/html:rw # moutn nextcloud files folder
       - ./Data:/data:rw # mount your personal data folder
@@ -11,6 +12,7 @@ services:
   
   aria2:
     image: wahyd4/aria2-ui:nextcloud
+    container_name: aria2-ui
     ports:
       - "8080:80"
       - "443:443"
