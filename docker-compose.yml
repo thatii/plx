@@ -77,7 +77,7 @@ services:
     ports:
       - 8083:8080 #  注意此端口和qBittorrent冲突，请把左边的端口改成非冲突端口
       - 9090:9090    
- plex:
+  plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
     network_mode: host
