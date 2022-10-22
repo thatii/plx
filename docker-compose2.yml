@@ -28,7 +28,7 @@ services:
       # - RPC_SECRET=Hello # aria2 rpc secret
       # - ARIA2_SSL=false
       - ARIA2_USER=adm # aria2 login user
-      - ARIA2_PWD=1234wssdlh  # aria2 login password
+      - ARIA2_PWD=pwd  # aria2 login password
     links:
       - nextcloud:file-manager
     restart: always
@@ -61,22 +61,6 @@ services:
     ports:
       - 8082:6789 
       
-  aria2-ui:
-    image: wahyd4/aria2-ui:latest
-    container_name: aria2-ui
-    ports:
-      - "8080:80"
-      - "443:443"
-    volumes:
-      - ./Data/Downloads:/data
-    environment:
-      - PUID=0
-      - PGID=0 # - DOMAIN=https://subdomain.example.com # - SSL=true # - RPC_SECRET=Hello
-      - ARIA2_USER=adm
-      - ARIA2_PWD=12345ssdlh
-      - ENABLE_AUTH=true
-    restart: unless-stopped
- 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd
     container_name: sabnzbd
