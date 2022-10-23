@@ -7,8 +7,8 @@ services:
     container_name: radarr
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0  # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
       - TZ=Asia/Shanghai
     volumes:
       - ./radarr:/config
@@ -21,8 +21,8 @@ services:
     container_name: sonarr
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0 # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000 # 注意替换
       - TZ=Asia/Shanghai
     volumes:
       - ./sonarr:/config
