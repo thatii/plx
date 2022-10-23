@@ -1,0 +1,161 @@
+version: "3.5"
+
+services:
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: host
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=8080 # QB webui的端口，你可以换成其他端口
+    volumes:
+      - ./qbittorrent:/config
+      - /root/plx/Data/Downloads:/downloads   # 替换成你自己的下载文件夹
+    restart: unless-stopped  
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - ./plex:/config
+      - /root/plx/Data/tv:/tv
+      - /root/plx/Data/Movies:/movies
+    restart: unless-stopped
+
+  emby:
+    image: emby/embyserver
+    container_name: embyserver
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - GIDLIST=100
+    volumes:
+      - ./emby:/config
+      - /root/plx/Data/Movies:/volume1/Data/Movies     # 替换成你自己的电影文件夹
+
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./prowlarr:/config
+      - /root/plx/Data/Downloads:/downloads   # 替换成你自己的下载文件夹
+    ports:
+      - 9696:9696
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./jackett:/config
+      - /root/plx/Data/Downloads:/downloads   # 替换成你自己的下载文件夹
+    ports:
+      - 9117:9117
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    ports:
+      - 8191:8191
+
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./radarr:/config
+      - /root/plx:/volume1 # 注意这里不再是下载文件夹，需要是下载/电影/剧集文件夹的母文件夹
+    ports:
+      - 7878:7878
+      
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000 # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./sonarr:/config
+      - /root/plx:/volume1 # 注意这里不再是下载文件夹，需要是下载/电影/剧集文件夹的母文件夹
+    ports:
+      - 8989:8989
+ 
+  overseerr:
+    image: lscr.io/linuxserver/overseerr
+    container_name: overseerr
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    ports:
+      - 5055:5055
+    volumes:
+      - ./overseerr:/app/config
+          
+  ombi:
+    image: lscr.io/linuxserver/ombi:latest
+    container_name: ombi
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./ombi:/config
+    ports:
+      - 3579:3579
+      
+  chinesesubfinder:
+    image: allanpk716/chinesesubfinder:latest
+    container_name: chinesesubfinder
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./chinesesubfinder:/config
+      - /root/plx/Data/Movies:/volume1/Data/Movies
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./bazarr:/config
+      - /root/plx/Data/Movies:/volume1/Data/Movies     # 替换成你自己的电影文件夹   # - /volume1:/volume1 你也可以选择这种整个映射的形式
+    ports:
+      - 6767:6767
