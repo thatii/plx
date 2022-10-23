@@ -7,8 +7,8 @@ services:
     container_name: overseerr
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0  # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
       - TZ=Asia/Shanghai
     ports:
       - 5055:5055
@@ -20,8 +20,8 @@ services:
     container_name: ombi
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0  # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
       - TZ=Asia/Shanghai
     volumes:
       - ./ombi:/config
@@ -33,8 +33,8 @@ services:
     container_name: chinesesubfinder
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0  # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
       - TZ=Asia/Shanghai
     volumes:
       - ./chinesesubfinder:/config
@@ -45,8 +45,8 @@ services:
     container_name: bazarr
     restart: unless-stopped
     environment:
-      - PUID=0 # 注意替换
-      - PGID=0  # 注意替换
+      - PUID=1000 # 注意替换
+      - PGID=1000  # 注意替换
       - TZ=Asia/Shanghai
     volumes:
       - ./bazarr:/config
